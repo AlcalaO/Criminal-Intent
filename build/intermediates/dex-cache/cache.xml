@@ -3,30 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="/home/odar/Documents/programacion/Android/AndroidProgramming3e/08_RecyclerView/CriminalIntent/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="/home/odar/AndroidStudioProjects/CriminalIntent/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="/home/odar/Documents/programacion/Android/AndroidProgramming3e/08_RecyclerView/CriminalIntent/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_4b5768b1d33f91fb635e46b2753985dee4464661/classes.dex" />
+        <dex dex="/home/odar/AndroidStudioProjects/CriminalIntent/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_e3f89d2a796a1bc2705259e772b3c28939ca2aec/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/home/odar/Documents/programacion/Android/AndroidProgramming3e/08_RecyclerView/CriminalIntent/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jar="/home/odar/AndroidStudioProjects/CriminalIntent/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="4d8a6a49e1c43d0530556403dcfd24447ddda784">
-        <dex dex="/home/odar/Documents/programacion/Android/AndroidProgramming3e/08_RecyclerView/CriminalIntent/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_19318e74c5439cb78f53153d388de2d26ae3dad5/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/odar/.android/build-cache/5e3d4c472f4f8cc8dbf15e267327cc26b809e8c1/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="a3e61044038fb54cddf6b8dc79f41d2b57f42caf">
-        <dex dex="/home/odar/Documents/programacion/Android/AndroidProgramming3e/08_RecyclerView/CriminalIntent/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c6dee2f02d0254fbb7550a3941dffd2165a2fcb6/classes.dex" />
+        sha1="bd1434f940e97988101ac51d398cfcdcf14244c1">
+        <dex dex="/home/odar/AndroidStudioProjects/CriminalIntent/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_74380e9164f0d38fadd58f59681a0f4425c992a8/classes.dex" />
     </item>
 
 </items>
