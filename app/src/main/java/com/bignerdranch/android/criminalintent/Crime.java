@@ -1,5 +1,7 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.text.format.DateFormat;
+
 import java.util.Date;
 import java.util.UUID;
 
