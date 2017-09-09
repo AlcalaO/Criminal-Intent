@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="643157a22b51e3cb14c8e5f613be47ae56823a22">
+        sha1="dc896bf621709704c7246b4b3124e637723b1472">
         <dex dex="/home/odar/AndroidStudioProjects/Criminal-Intent/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_78af26f82c21b5add8b9714d031b1bdb2e34a847/classes.dex" />
     </item>
 
