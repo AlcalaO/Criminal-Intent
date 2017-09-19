@@ -26,12 +26,15 @@ public class CrimePagerActivity extends AppCompatActivity{
     private static final String EXTRA_CRIME_ID =
             "com.bignerdranch.android.criminalintent.crime_id";
 
+    // This intent is for create a new intent for this activity, its static to be called outside
+    // the class. This works with fragment arguments, the argument here is the crime ID.
     public static Intent newIntent (Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
         return intent;
     }
 
+    // onCreate method will wire up the view for the activity and initialize components
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,8 @@ public class CrimePagerActivity extends AppCompatActivity{
 
         mCrimes = CrimeLab.get(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        // FragmentStatePagerAdapter needs a FragmentManager to function
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
@@ -56,6 +61,8 @@ public class CrimePagerActivity extends AppCompatActivity{
             }
         });
 
+        /* This is to find the crime it was asked for instead of the first element on the
+        * array */
         for (int i = 0; i < mCrimes.size(); i++) {
             if (mCrimes.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);
