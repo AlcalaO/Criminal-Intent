@@ -12,6 +12,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +26,8 @@ public class CrimePagerActivity extends AppCompatActivity{
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
+    private Button mGoToFirst;
+    private Button mGoToLast;
 
     private static final String EXTRA_CRIME_ID =
             "com.bignerdranch.android.criminalintent.crime_id";
@@ -41,8 +45,10 @@ public class CrimePagerActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime_pager);
+        mCrimes = CrimeLab.get(this).getCrimes();
 
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+
 
         mViewPager = (ViewPager) findViewById(R.id.crime_view_pager);
         // Convert pixels to dp to set the margin between pages
@@ -55,9 +61,52 @@ public class CrimePagerActivity extends AppCompatActivity{
         mViewPager.setClipToPadding(false);
         mViewPager.setPadding(16, 16, 16, 16);
 
-        mCrimes = CrimeLab.get(this).getCrimes();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Add a onPageChangeListener to the ViewPager
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (mViewPager.getCurrentItem() == 0){
+                    mGoToFirst.setEnabled(false);
+                } else {
+                    mGoToFirst.setEnabled(true);
+                }
+                
+                if (mViewPager.getCurrentItem() == mCrimes.size() - 1){
+                    mGoToLast.setEnabled(false);
+                } else {
+                    mGoToLast.setEnabled(true);
+                }
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        mGoToFirst = (Button) findViewById(R.id.go_to_first);
+        mGoToFirst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(0);
+            }
+        });
+
+        mGoToLast = (Button) findViewById(R.id.go_to_last);
+        mGoToLast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mCrimes.size() - 1);
+            }
+        });
+
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
         // FragmentStatePagerAdapter needs a FragmentManager to function
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
