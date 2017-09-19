@@ -2,6 +2,7 @@ package com.bignerdranch.android.criminalintent;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 
 import java.util.List;
 import java.util.UUID;
@@ -43,6 +45,15 @@ public class CrimePagerActivity extends AppCompatActivity{
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
 
         mViewPager = (ViewPager) findViewById(R.id.crime_view_pager);
+        // Convert pixels to dp to set the margin between pages
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                16, r.getDisplayMetrics());
+
+        // Set the padding for the actual page
+        mViewPager.setPageMargin((int)px);
+        mViewPager.setClipToPadding(false);
+        mViewPager.setPadding(16, 16, 16, 16);
 
         mCrimes = CrimeLab.get(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
