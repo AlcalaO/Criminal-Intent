@@ -14,8 +14,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import static android.widget.CompoundButton.*;
@@ -24,12 +27,16 @@ public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_TIME = "DialogTime";
 
     private static final int REQUEST_DATE = 0;
+    private static final int REQUEST_TIME = 1;
+
 
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
+    private Button mTimeButton;
     private CheckBox mSolvedCheckbox;
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -85,6 +92,22 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        mTimeButton = (Button) v.findViewById(R.id.crime_time);
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setGregorianChange(mCrime.getDate());
+        mTimeButton.setText( gc.get(Calendar.HOUR_OF_DAY) + ":" +
+                                    gc.get(Calendar.MINUTE) + ":" + gc.get(Calendar.SECOND));
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                TimePickerFragment timeDialog = TimePickerFragment.newInstance(mCrime.getDate());
+                timeDialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+                timeDialog.show(manager, DIALOG_TIME);
+            }
+        });
+
+
         mSolvedCheckbox = (CheckBox) v.findViewById(R.id.crime_solved);
         mSolvedCheckbox.setChecked(mCrime.isSolved());
         mSolvedCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -107,6 +130,18 @@ public class CrimeFragment extends Fragment {
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
+            updateDate();
+        }
+
+        if (requestCode == REQUEST_TIME) {
+            int hour = (int)data.getSerializableExtra(TimePickerFragment.EXTRA_HOUR);
+            int minute = (int)data.getSerializableExtra(TimePickerFragment.EXTRA_MINUTE);
+            Date date = mCrime.getDate();
+            date.setHours(hour);
+            date.setMinutes(minute);
+            mCrime.setDate(date);
+//            mTimeButton.setText(hour + ":" + minute + ":00");
+            mTimeButton.setText(date.getHours() + ":" + date.getMinutes());
             updateDate();
         }
     }
