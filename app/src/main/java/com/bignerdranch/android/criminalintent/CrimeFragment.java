@@ -32,6 +32,9 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_TIME = 1;
 
+    private static final String EXTRA_DATE =
+            "com.bignerdranch.android.criminalintent.date";
+
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -85,10 +88,20 @@ public class CrimeFragment extends Fragment {
         mDateButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
-                dialog.show(manager, DIALOG_DATE);
+                // Resource to know if the app is running on a phone or tablet
+                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+                if (isTablet) {
+                    // If isTablet == true then start has a dialog.
+                    FragmentManager manager = getFragmentManager();
+                    DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                    dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                    dialog.show(manager, DIALOG_DATE);
+                } else {
+                    // Else start as an full-screen activity
+                    Intent intent = new Intent(getActivity(), DatePickerActivity.class);
+                    intent.putExtra(EXTRA_DATE, mCrime.getDate());
+                    startActivityForResult(intent, REQUEST_DATE);
+                }
             }
         });
 
