@@ -116,6 +116,9 @@ public class CrimeFragment extends Fragment {
                 crimeLab.deleteCrime(mCrime);
                 getActivity().finish();
                 return true;
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
             default:
                 super.onOptionsItemSelected(item);
                 return true;
