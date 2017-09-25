@@ -34,12 +34,40 @@ public class CrimeLab {
         mDatabase = new CrimeBaseHelper(mContext). getWritableDatabase();
     }
 
-//    public List<Crime> getCrimes() {
-//    }
+    public List<Crime> getCrimes() {
+        List<Crime> crimes = new ArrayList<>();
+
+        CrimeCursorWrapper cursor = queryCrimes(null, null);
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                crimes.add(cursor.getCrime());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return crimes;
+    }
 
     public Crime getCrime(UUID id) {
+        CrimeCursorWrapper cursor = queryCrimes(
+                CrimeTable.Cols.UUID + " = ?",
+                new String[] { id.toString() }
+        );
 
-        return null;
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+
+            cursor.moveToFirst();
+            return cursor.getCrime();
+        } finally {
+            cursor.close();
+        }
     }
 
     public void updateCrime(Crime crime) {
