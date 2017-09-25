@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,8 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private boolean mSubtitleVisible;
+    private TextView mAddCrimeText;
+    private ImageButton mAddCrimeButton;
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
@@ -47,6 +50,22 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView = (RecyclerView) view
                 .findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mAddCrimeText = (TextView) view.findViewById(R.id.add_crime_text);
+        mAddCrimeText.bringToFront();
+        mAddCrimeButton = (ImageButton) view.findViewById(R.id.new_crime_button);
+        mAddCrimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Here we create the crime and add it to the crime list.
+                Crime crime = new Crime();
+                CrimeLab.get(getActivity()).addCrime(crime);
+
+                // We need to start an instance of CrimePagerActivity with the new crime ID.
+                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+                startActivity(intent);
+            }
+        });
 
         updateUI();
 
@@ -120,6 +139,16 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyDataSetChanged();
+        }
+
+        if (mAdapter.getItemCount() != 0){
+            mAddCrimeText.setVisibility(View.INVISIBLE);
+            mAddCrimeButton.setEnabled(false);
+            mAddCrimeButton.setVisibility(View.INVISIBLE);
+        } else {
+            mAddCrimeText.setVisibility(View.VISIBLE);
+            mAddCrimeButton.setEnabled(true);
+            mAddCrimeButton.setVisibility(View.VISIBLE);
         }
         updateSubtitle();
     }
