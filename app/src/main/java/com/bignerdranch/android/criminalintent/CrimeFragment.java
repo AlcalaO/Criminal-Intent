@@ -1,12 +1,16 @@
 package com.bignerdranch.android.criminalintent;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Data;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
@@ -21,7 +25,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static android.widget.CompoundButton.*;
@@ -40,6 +46,7 @@ public class CrimeFragment extends Fragment {
     private CheckBox mSolvedCheckbox;
     private Button mReportButton;
     private Button mSuspectButton;
+    private Button mCallSuspectButton;
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -155,6 +162,84 @@ public class CrimeFragment extends Fragment {
                 PackageManager.MATCH_DEFAULT_ONLY) == null) {
             mSuspectButton.setEnabled(false);
         }
+
+        mCallSuspectButton = (Button) v.findViewById(R.id.call_crime_suspect);
+        mCallSuspectButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contactNumber = "";
+                List<String> numbers = new ArrayList<String>();
+                String contactID = "";
+                String contactName = "";
+                // ContentResolver retrieves data about contacts.
+                ContentResolver cr = getActivity().getContentResolver();
+
+                Cursor curId = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                        null, null, null, null);
+
+                if (curId.getCount() > 0) {
+                    while (curId.moveToNext()) {
+                        contactID = curId.getString(
+                                curId.getColumnIndex(ContactsContract.Contacts._ID));
+                        contactName = curId.getString(
+                                curId.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+                        if (Integer.parseInt(curId.getString(
+                                curId.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                            Cursor curPhone = cr.query(Phone.CONTENT_URI, null,
+                                    Phone.CONTACT_ID + " = ?",
+                                    new String[] {contactID}, null);
+
+                            while (curPhone.moveToNext()) {
+                                contactNumber =  curPhone.getString(
+                                        curPhone.getColumnIndex(Phone.NUMBER));
+                                numbers.add(contactNumber);
+                            }
+                        }
+                    }
+                }
+//
+//                String [] projectionID = new String[] {
+//                        ContactsContract.Contacts._ID,
+//                        ContactsContract.Contacts.DISPLAY_NAME
+//                };
+//
+//                Cursor cursorId = cr.query(ContactsContract.Contacts.CONTENT_URI,
+//                        projectionID, "DISPLAY_NAME = '" + mCrime.getSuspect() + "'", null, null);
+//
+//                if (cursorId == null) {
+//                    return;
+//                } else if (cursorId.getCount() >= 1) {
+//                    contactID = cursorId.getString(
+//                            cursorId.getColumnIndex(ContactsContract.Contacts._ID));
+//                    cursorId.close();
+//                }
+//
+//                // projection works as the argument to query the contact, in this case we'll
+//                // look for the _ID of the contact.
+//                String[] projectionPhone = new String[] {
+//                        Phone._ID,
+//                        Phone.NUMBER
+//                };
+//                // Here we query the contact from the ContactsContract.Contacts database
+//                Cursor cursorPhone = cr.query(ContactsContract.Contacts.CONTENT_LOOKUP_URI,
+//                        projectionPhone, null, null, null);
+//
+//
+//                if (cursorPhone == null) {
+//                } else if (cursorPhone.getCount() >= 1) {
+//                    contactNumber = cursorPhone.getString(
+//                            cursorPhone.getColumnIndex(Phone.NUMBER));
+//                    cursorPhone.close();
+//                }
+//                for (int i = 0; i < numbers.size(); i++) {
+//
+//                }
+                Uri number = Uri.parse("tel:"+contactNumber);
+                Intent i = new Intent(Intent.ACTION_DIAL, number);
+                startActivity(i);
+            }
+        });
 
         return v;
     }
