@@ -201,29 +201,24 @@ public class CrimeFragment extends Fragment {
                         Cursor curPhone = cr.query(Phone.CONTENT_URI,
                                 new String[]{Phone.NUMBER},
                                 Phone.CONTACT_ID + " = ?",
-                                new String[] {contactID}, null);
-                        if (curPhone.getCount() > 0){
+                                new String[]{contactID}, null);
+                        if (curPhone.getCount() > 0) {
 //                            contactNumber =  curPhone.getString(
 //                                    curPhone.getColumnIndex(Phone.DISPLAY_NAME));
                             curPhone.moveToFirst();
-                            contactNumber =  curPhone.getString(0);
+                            contactNumber = curPhone.getString(0);
                             numbers.add(contactNumber);
                         }
                         curPhone.close();
                     }
                 }
-
                 curContact.close();
-
-                // That is you suspect's name
-                c.moveToFirst();
-                String suspect = c.getString(0);
-                mCrime.setSuspect(suspect);
-                mSuspectButton.setText(suspect);
-            } finally {
-                c.close();
+                Uri data = Uri.parse("tel:"+contactNumber);
+                Intent i = new Intent(Intent.ACTION_DIAL, data);
+                startActivity(i);
             }
-        }
+        });
+        return v;
     }
 
     private void updateDate() {
