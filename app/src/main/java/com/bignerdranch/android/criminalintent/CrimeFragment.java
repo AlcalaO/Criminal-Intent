@@ -188,6 +188,14 @@ public class CrimeFragment extends Fragment {
             }
         });
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mPhotoView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                PhotoZoomedFragment zoomedDialog = PhotoZoomedFragment.newInstance(mPhotoFile.getPath());
+                zoomedDialog.show(manager, DIALOG_DATE);
+            }
+        });
         updatePhotoView();
 
         return v;
