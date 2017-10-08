@@ -21,6 +21,8 @@ public class PictureUtils {
     public static Bitmap getScaledBitmap(String path, int destWidth, int destHeight) {
         // Read in the dimensions of the image on disk
         BitmapFactory.Options options = new BitmapFactory.Options();
+
+        // this option reads the bitmap properties without loading it into memory
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
         float srcWidth = options.outWidth;
