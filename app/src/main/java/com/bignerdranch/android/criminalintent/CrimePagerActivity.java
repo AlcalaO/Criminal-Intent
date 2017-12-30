@@ -18,13 +18,19 @@ import java.util.UUID;
  * Created by odar on 08/09/17.
  */
 
-public class CrimePagerActivity extends AppCompatActivity{
+public class CrimePagerActivity extends AppCompatActivity
+                    implements CrimeFragment.Callbacks{
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
 
     private static final String EXTRA_CRIME_ID =
             "com.bignerdranch.android.criminalintent.crime_id";
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
+    }
 
     // This intent is for create a new intent for this activity, its static to be called outside
     // the class. This works with fragment arguments, the argument here is the crime ID.
